@@ -1,5 +1,8 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
+
+const ObjectId = require('mongodb').ObjectId;
+
 const app = express();
 require('dotenv').config();
 
@@ -24,12 +27,19 @@ const run = async () => {
 
         const carCollection = database.collection('cars');
 
+        // Find All Cars Data Method 
         app.get('/cars', async (req, res) => {
-            
             const carsCollect = carCollection.find({});
             const result = await carsCollect.toArray();
             res.json(result);
+        });
 
+        // Find Single Car Data Method 
+        app.get('/cars/:id', async (req, res) => {   
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await carCollection.findOne(query);
+            res.json(result);
         });
 
         

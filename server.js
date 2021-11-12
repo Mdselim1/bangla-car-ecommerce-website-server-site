@@ -27,6 +27,8 @@ const run = async () => {
 
         const carCollection = database.collection('cars');
 
+        const orderCollection = database.collection('order');
+
         // Find All Cars Data Method 
         app.get('/cars', async (req, res) => {
             const carsCollect = carCollection.find({});
@@ -41,6 +43,14 @@ const run = async () => {
             const result = await carCollection.findOne(query);
             res.json(result);
         });
+
+        // Add Order product on database 
+        app.post('/order', async (req, res) => {
+            const car = req.body;
+            const result = await orderCollection.insertOne(car);
+            res.json(result);      
+        });
+
 
         
     }

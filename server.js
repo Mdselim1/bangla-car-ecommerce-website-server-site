@@ -31,6 +31,8 @@ const run = async () => {
 
         const reviewCollection = database.collection('review');
 
+        const userCollection = database.collection('users');
+
         // Find All Cars Data Method 
         app.get('/cars', async (req, res) => {
             const carsCollect = carCollection.find({});
@@ -70,7 +72,7 @@ const run = async () => {
         });
 
         //Find single User Car Data
-        app.get('/order', async (req, res) => {
+        app.get('/order/email', async (req, res) => {
             const email = req.query.email;
             const query = { email: email };
             const orders = orderCollection.find(query);
@@ -105,8 +107,27 @@ const run = async () => {
             const data = reviewCollection.find({});
             const result = await data.toArray();
             res.json(result);
-        })
+        });
 
+        // Save Data To User Database 
+
+        app.post('/users', async (req, res) => {
+            const user = req.body;
+            const result = await userCollection.insertOne(user);
+            console.log(result);
+            res.json(result);    
+        });
+
+        // Make Admin System 
+        app.put('/users/admin', async (req, res) => {
+            
+            const user = req.body;
+            const filter = { email: user.email };
+            const updateDoc = { $set: { role: 'admin' } };
+            const result = await userCollection.updateOne(filter, updateDoc);
+            res.json(result);
+
+        })
 
         
     }

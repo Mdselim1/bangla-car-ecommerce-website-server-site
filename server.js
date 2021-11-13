@@ -51,6 +51,22 @@ const run = async () => {
             res.json(result);      
         });
 
+        //Find single User Car Data
+        // app.get('/order', async (req, res) => {
+        //     const orders = orderCollection.find({});
+        //     const result = await orders.toArray();
+        //     res.json(result);
+        // });
+
+        //Find single User Car Data
+        app.get('/order', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const orders = orderCollection.find(query);
+            const result = await orders.toArray();
+            res.json(result);
+        });
+
 
         
     }

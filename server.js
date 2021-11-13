@@ -29,6 +29,8 @@ const run = async () => {
 
         const orderCollection = database.collection('order');
 
+        const reviewCollection = database.collection('review');
+
         // Find All Cars Data Method 
         app.get('/cars', async (req, res) => {
             const carsCollect = carCollection.find({});
@@ -68,13 +70,6 @@ const run = async () => {
         });
 
         //Find single User Car Data
-        // app.get('/order', async (req, res) => {
-        //     const orders = orderCollection.find({});
-        //     const result = await orders.toArray();
-        //     res.json(result);
-        // });
-
-        //Find single User Car Data
         app.get('/order', async (req, res) => {
             const email = req.query.email;
             const query = { email: email };
@@ -83,6 +78,12 @@ const run = async () => {
             res.json(result);
         });
 
+        // Find single User Car Data
+        app.get('/order', async (req, res) => {
+            const orders = orderCollection.find({});
+            const result = await orders.toArray();
+            res.json(result);
+        });
 
         // Delete Public Order Data 
         app.delete('/order/:id', async (req, res) => {
@@ -91,6 +92,20 @@ const run = async () => {
             const result = await orderCollection.deleteOne(deleteId);
             res.json(result);
         });
+
+        //UPload Review Data Method 
+        app.post('/review', async (req, res) => {
+            const review = req.body;
+            const result = await reviewCollection.insertOne(review);
+            res.json(result);
+        });
+
+        // Get Review Data 
+        app.get('/review', async (req, res) => {
+            const data = reviewCollection.find({});
+            const result = await data.toArray();
+            res.json(result);
+        })
 
 
         

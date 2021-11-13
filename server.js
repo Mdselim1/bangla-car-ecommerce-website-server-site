@@ -44,10 +44,26 @@ const run = async () => {
             res.json(result);
         });
 
+        // Find Single Car Data Method 
+        app.delete('/cars/:id', async (req, res) => {   
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await carCollection.deleteOne(query);
+            res.json(result);
+        });
+
+        //Add Car Data 
+
+        app.post('/cars', async (req, res) => {
+            const cardata = req.body;
+            const result = await carCollection.insertOne(cardata);
+            res.json(result);
+        });
+
         // Add Order product on database 
         app.post('/order', async (req, res) => {
-            const car = req.body;
-            const result = await orderCollection.insertOne(car);
+            const orderdata = req.body;
+            const result = await orderCollection.insertOne(orderdata);
             res.json(result);      
         });
 
@@ -64,6 +80,15 @@ const run = async () => {
             const query = { email: email };
             const orders = orderCollection.find(query);
             const result = await orders.toArray();
+            res.json(result);
+        });
+
+
+        // Delete Public Order Data 
+        app.delete('/order/:id', async (req, res) => {
+            const id = req.params.id;
+            const deleteId = { _id: ObjectId(id) };
+            const result = await orderCollection.deleteOne(deleteId);
             res.json(result);
         });
 
